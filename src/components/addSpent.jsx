@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function AddSpent() {
@@ -10,17 +10,23 @@ export default function AddSpent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (date && amount && category) {
-  //   setSpendings([...spendings, { date, amount, category }]);
-  //   setDate(new Date().toISOString().slice(0, 10));
-  //   setAmount('');
-  //     setCategory('');
-  //   } else {
-  //     alert('Please fill in all fields');
-  //   }
-  // };
+  const fetchSpendings = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/spending');
+      // format the date
+      response.data.forEach((spending) => {
+        spending.date = new Date(spending.date).toISOString().slice(0, 10);
+      });
+      setSpendings(response.data);
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSpendings();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (date && amount && category) {
@@ -43,7 +49,6 @@ export default function AddSpent() {
       alert('Please fill in all fields');
     }
   };
-
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
