@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import SpendingsTable from './SpendingsTable';
 import SpendingForm from './SpendingForm';
 import SpendingsPagination from './SpendingsPagination';
@@ -38,14 +37,14 @@ const AddSpent = () => {
   const handleFormSubmit = async (data) => {
     try {
       const response = await axios.post('http://localhost:3001/api/spending', data);
-      console.log(typeof data.amount);
       // If the request was successful, update your state
       if (response.status === 200) {
+        response.data.date = new Date(response.data.date).toISOString().slice(0, 10);
         // You may need to handle id here if your spendings require one
-        setSpendings(prevSpendings => [...prevSpendings, data]);
+        setSpendings(prevSpendings => [...prevSpendings, response.data]);
       }
     } catch (error) {
-      console.error('There was an error!', error);
+      alert('Empty fields are not allowed!');
     }
   };
   

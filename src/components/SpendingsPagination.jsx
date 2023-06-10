@@ -9,7 +9,7 @@ const SpendingsPagination = ({ currentPage, totalPage, onPageChange }) => {
   }
 
   return (
-    <div className="mt-4">
+    <div className="sticky bottom-0 bg-white z-10">
       <nav className="flex items-center justify-between">
         <ul className="flex items-center">
           {pageNumbers.map(number => (

@@ -33,7 +33,7 @@ app.post('/api/spending', (req, res) => {
     category,
   });
   newSpending.save()
-  .then(() => res.json('Spending added!'))
+  .then(spending => res.json(spending)) // return newly created spending
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
