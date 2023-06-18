@@ -27,15 +27,13 @@ connection.once('open', () => {
 
 app.post('/api/spending', (req, res) => {
   const { date, amount, category } = req.body;
-
   const newSpending = new Spending({
     date,
     amount,
     category,
   });
-
   newSpending.save()
-  .then(() => res.json('Spending added!'))
+  .then(spending => res.json(spending)) // return newly created spending
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -43,6 +41,12 @@ app.get('/api/spending', (req, res) => {
   Spending.find()
   .then(spending => res.json(spending))
   .catch(err => res.status(400).json('Error: ' + err));
+});
+
+app.delete('/api/spending/:id', (req, res) => {
+  Spending.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Spending deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 app.listen(port, () => {

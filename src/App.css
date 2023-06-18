@@ -4,3 +4,6 @@
   box-sizing: border-box;
 }
 
+.selected {
+  background-color: #e5e7eb;
+}
